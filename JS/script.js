@@ -10,7 +10,7 @@ let answersArea = document.querySelector(".answer");
 let resultsPage = document.querySelector(".results");
 
 let cutdownTimer;
-let cutdownTime = 2;
+let cutdownTime = 5;
 let currentIndex;
 let rightAnswers = 0;
 let numOfQuestions = 0;
@@ -33,9 +33,6 @@ function getData() {
   myRequest.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200) {
       let data = JSON.parse(this.responseText);
-      let dataLength = data.length;
-      createCurrentIndex();
-      let rightAnswer = data[currentIndex].right_answer;
 
       // Start
       startButton.onclick = function () {
@@ -43,13 +40,13 @@ function getData() {
         cutdownPage.style.display = "block";
 
         // cutdown
-        cutdown(cutdownTime, data[currentIndex], dataLength, rightAnswer);
+        cutdown(cutdownTime);
       };
 
       // show q and choises
-      showQuestionsAndAnswer(data[currentIndex], dataLength, rightAnswer);
+      showQuestionsAndAnswer(data);
 
-      checkAnswer(data[currentIndex], dataLength, rightAnswer);
+      checkAnswer(data);
 
       showResults();
     }
@@ -60,7 +57,7 @@ function getData() {
 getData();
 
 // Cut down for befor play page
-function cutdown(duration, data, dataLength, rightAnswer) {
+function cutdown(duration) {
   cutdownElement.innerHTML = cutdownTime;
   let seconds = duration % 60;
 
@@ -76,9 +73,12 @@ function cutdown(duration, data, dataLength, rightAnswer) {
   }, 1000);
 }
 
-function showQuestionsAndAnswer(data, dataLength, rightAnswer) {
+function showQuestionsAndAnswer(data) {
+  createCurrentIndex();
+  let rightAnswer = data[currentIndex].right_answer;
+
   let twoDigitElement = document.createElement("h2");
-  let twoDigitContent = document.createTextNode(data.word);
+  let twoDigitContent = document.createTextNode(data[currentIndex].word);
   twoDigitElement.appendChild(twoDigitContent);
 
   document.querySelector(".word").appendChild(twoDigitElement);
@@ -128,7 +128,8 @@ function showQuestionsAndAnswer(data, dataLength, rightAnswer) {
 
 let correctResultsDuringAnswer = document.querySelector(".current-result");
 
-function checkAnswer(data, dataLength, rightAnswer) {
+function checkAnswer(data) {
+  let rightAnswer = data[currentIndex].right_answer;
   let theChoosenAnswer;
 
   let spans = document.querySelectorAll(".answer span");
@@ -160,8 +161,12 @@ function checkAnswer(data, dataLength, rightAnswer) {
       if (numOfQuestions === numOfDigitYouWant) {
         clearInterval(int);
       }
-      createCurrentIndex();
-      getData();
+
+      showQuestionsAndAnswer(data);
+
+      checkAnswer(data);
+
+      showResults();
     };
   }
 }
