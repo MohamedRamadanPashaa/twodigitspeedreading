@@ -14,7 +14,7 @@ let cutdownTime = 2;
 let currentIndex;
 let rightAnswers = 0;
 let numOfQuestions = 0;
-let numOfDigitYouWant = 5;
+let numOfDigitYouWant = 100;
 let int = null;
 
 let twoDigit = [];
