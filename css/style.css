@@ -201,9 +201,9 @@ ul {
 
 @media (max-width: 767px) {
   .play .container .word {
-    padding: 10px;
-    width: 200px;
-    font-size: 20px;
+    padding: 8px;
+    width: 250px;
+    font-size: 18px;
   }
   .play .container .answer {
     margin: 20px auto;
