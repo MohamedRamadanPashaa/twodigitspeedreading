@@ -8,9 +8,10 @@ let playPage = document.querySelector(".play");
 let quizArea = document.querySelector(".word");
 let answersArea = document.querySelector(".answer");
 let resultsPage = document.querySelector(".results");
+let chooseTable = document.getElementById("choose-table");
 
 let cutdownTimer;
-let cutdownTime = 5;
+let cutdownTime = 2;
 let currentIndex;
 let rightAnswers = 0;
 let numOfQuestions = 0;
@@ -27,7 +28,7 @@ function createCurrentIndex() {
   twoDigit.splice(ranIndex, 1);
 }
 
-function getData() {
+function getData(apilink) {
   let myRequest = new XMLHttpRequest();
 
   myRequest.onreadystatechange = function () {
@@ -35,13 +36,13 @@ function getData() {
       let data = JSON.parse(this.responseText);
 
       // Start
-      startButton.onclick = function () {
-        startPage.remove();
-        cutdownPage.style.display = "block";
+      // startButton.onclick = function () {
+      //   startPage.remove();
+      //   cutdownPage.style.display = "block";
 
-        // cutdown
-        cutdown(cutdownTime);
-      };
+      //   // cutdown
+      //   cutdown(cutdownTime);
+      // };
 
       // show q and choises
       showQuestionsAndAnswer(data);
@@ -51,10 +52,33 @@ function getData() {
       showResults();
     }
   };
-  myRequest.open("GET", "2-digit.json", true);
+
+  myRequest.open("GET", apilink, true);
   myRequest.send();
 }
-getData();
+
+startButton.onclick = () => {
+  startPage.remove();
+  cutdownPage.style.display = "block";
+  // cutdown
+  cutdown(cutdownTime);
+
+  if (chooseTable.value === "object1") {
+    // getData("Object-1.json");
+    apilink = "Object-1.json";
+    // console.log(apilink);
+  } else if (chooseTable.value === "object2") {
+    // getData("Object-2.json");
+    apilink = "Object-2.json";
+    // console.log(apilink);
+  } else if (chooseTable.value === "action") {
+    // getData("Action.json");
+    apilink = "Action.json";
+    // console.log(apilink);
+  }
+
+  getData(apilink);
+};
 
 // Cut down for befor play page
 function cutdown(duration) {
