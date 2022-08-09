@@ -346,9 +346,10 @@ ul {
   }
   .results .container table tbody td {
     padding: 10px;
+    font-size: 16px;
   }
   .results .container .main-page {
-    width: 250px;
+    width: 200px;
     font-size: 22px;
   }
 }

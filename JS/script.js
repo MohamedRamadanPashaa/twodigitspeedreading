@@ -17,6 +17,7 @@ let rightAnswers = 0;
 let numOfQuestions = 0;
 let numOfDigitYouWant = 100;
 let int = null;
+let tableType;
 
 let twoDigit = [];
 function createCurrentIndex() {
@@ -66,14 +67,17 @@ startButton.onclick = () => {
   if (chooseTable.value === "object1") {
     // getData("Object-1.json");
     apilink = "Object-1.json";
+    tableType = "Object 1";
     // console.log(apilink);
   } else if (chooseTable.value === "object2") {
     // getData("Object-2.json");
     apilink = "Object-2.json";
+    tableType = "Object 2";
     // console.log(apilink);
   } else if (chooseTable.value === "action") {
     // getData("Action.json");
     apilink = "Action.json";
+    tableType = "Action";
     // console.log(apilink);
   }
 
@@ -234,10 +238,12 @@ function showResults() {
     playPage.remove();
     resultsPage.style.display = "block";
     document.querySelector(".results .score").innerHTML = rightAnswers;
+
     document.querySelector(".results .time").innerHTML = timerRef.innerHTML;
     document.querySelector(".results .accuracy").innerHTML = `${Math.round(
       (rightAnswers / numOfDigitYouWant) * 100
     )}%`;
+    document.querySelector(".results .table").innerHTML = tableType;
   }
 }
 
