@@ -15,9 +15,10 @@ let cutdownTime = 2;
 let currentIndex;
 let rightAnswers = 0;
 let numOfQuestions = 0;
-let numOfDigitYouWant = 100;
+let numOfDigitYouWant = 5;
 let int = null;
 let tableType;
+let attemptTimeInSecond = 0;
 
 let twoDigit = [];
 function createCurrentIndex() {
@@ -35,15 +36,6 @@ function getData(apilink) {
   myRequest.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200) {
       let data = JSON.parse(this.responseText);
-
-      // Start
-      // startButton.onclick = function () {
-      //   startPage.remove();
-      //   cutdownPage.style.display = "block";
-
-      //   // cutdown
-      //   cutdown(cutdownTime);
-      // };
 
       // show q and choises
       showQuestionsAndAnswer(data);
@@ -188,6 +180,14 @@ function checkAnswer(data) {
       }
       if (numOfQuestions === numOfDigitYouWant) {
         clearInterval(int);
+
+        if (chooseTable.value === "object1") {
+          newResult("objectOne", objectOneResults, "object-1-tbody");
+        } else if (chooseTable.value === "object2") {
+          newResult("objectTwo", objectTwoResults, "object-2-tbody");
+        } else if (chooseTable.value === "action") {
+          newResult("action", actionResults, "action-tbody");
+        }
       }
 
       showQuestionsAndAnswer(data);
@@ -198,8 +198,7 @@ function checkAnswer(data) {
     };
   }
 }
-
-// Stop Watch
+// Stop Watch .correct
 
 let [milliseconds, seconds, minutes] = [0, 0, 0];
 let timerRef = document.querySelector(".play .timer span");
@@ -230,6 +229,8 @@ function displayTimer() {
     timerRef.innerHTML = `00:00:00`;
   }
   timerRef.innerHTML = `${m > 0 ? m + ":" : ""}${s}:${ms}`;
+
+  attemptTimeInSecond = minutes * 60 + seconds + milliseconds / 1000;
 }
 
 // Show Results
@@ -246,6 +247,77 @@ function showResults() {
     document.querySelector(".results .table").innerHTML = tableType;
   }
 }
+
+// results table function
+
+function getDateOfToday() {
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, "0");
+  let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  let yyyy = today.getFullYear();
+
+  today = mm + "-" + dd + "-" + yyyy;
+  return today;
+}
+
+let objectOneResults = [];
+if (localStorage.objectOne) {
+  objectOneResults = JSON.parse(localStorage.objectOne);
+} else {
+  objectOneResults = [];
+}
+
+let objectTwoResults = [];
+if (localStorage.objectTwo) {
+  objectTwoResults = JSON.parse(localStorage.objectTwo);
+} else {
+  objectTwoResults = [];
+}
+
+let actionResults = [];
+if (localStorage.action) {
+  actionResults = JSON.parse(localStorage.action);
+} else {
+  actionResults = [];
+}
+
+function newResult(localStorageName, tableArray, tableId) {
+  let newPlayer = {
+    score: rightAnswers,
+    time: timerRef.innerHTML,
+    date: getDateOfToday(),
+    attemptTimeInSecond: attemptTimeInSecond,
+  };
+
+  tableArray.push(newPlayer);
+  localStorage.setItem(localStorageName, JSON.stringify(tableArray));
+  showResultsTable(tableId, tableArray);
+}
+
+function showResultsTable(tableId, tableArray) {
+  let table = "";
+
+  tableArray.sort(
+    (a, b) => b.score - a.score || a.attemptTimeInSecond - b.attemptTimeInSecond
+  );
+
+  for (let i = 0; i < tableArray.length; i++) {
+    if (i === 5) break;
+    table += `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${tableArray[i].score}</td>
+        <td>${tableArray[i].time}</td>
+        <td>${tableArray[i].date}</td>
+      </tr> 
+    `;
+  }
+  document.getElementById(tableId).innerHTML = table;
+}
+
+showResultsTable("object-1-tbody", objectOneResults);
+showResultsTable("object-2-tbody", objectTwoResults);
+showResultsTable("action-tbody", actionResults);
 
 document
   .querySelector(".results .container .main-page")
