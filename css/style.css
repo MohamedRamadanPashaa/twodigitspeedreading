@@ -377,7 +377,7 @@ ul {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 30px;
-  margin: 50px auto;
+  margin: 30px auto;
 }
 
 .top-results table {
@@ -398,6 +398,17 @@ ul {
   font-size: 20px;
   color: #36b53c;
   font-weight: bold;
+}
+
+@media (max-width: 767px) {
+  .top-results table th {
+    padding: 8px;
+    font-size: 18px;
+  }
+  .top-results table td {
+    padding: 5px 8px;
+    font-size: 16px;
+  }
 }
 
 /* End Top Results */

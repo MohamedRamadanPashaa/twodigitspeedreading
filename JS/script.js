@@ -15,7 +15,7 @@ let cutdownTime = 2;
 let currentIndex;
 let rightAnswers = 0;
 let numOfQuestions = 0;
-let numOfDigitYouWant = 100;
+let numOfDigitYouWant = 5;
 let int = null;
 let tableType;
 let attemptTimeInSecond = 0;
@@ -52,25 +52,20 @@ function getData(apilink) {
 
 startButton.onclick = () => {
   startPage.remove();
+  document.querySelector(".top-results").style.display = "none";
   cutdownPage.style.display = "block";
   // cutdown
   cutdown(cutdownTime);
 
   if (chooseTable.value === "object1") {
-    // getData("Object-1.json");
     apilink = "Object-1.json";
     tableType = "Object 1";
-    // console.log(apilink);
   } else if (chooseTable.value === "object2") {
-    // getData("Object-2.json");
     apilink = "Object-2.json";
     tableType = "Object 2";
-    // console.log(apilink);
   } else if (chooseTable.value === "action") {
-    // getData("Action.json");
     apilink = "Action.json";
     tableType = "Action";
-    // console.log(apilink);
   }
 
   getData(apilink);
@@ -85,7 +80,7 @@ function cutdown(duration) {
     seconds--;
     cutdownElement.innerHTML = `${seconds}`;
 
-    if (--duration < 0) {
+    if (--duration < 1) {
       clearInterval(cutdownTimer);
       cutdownPage.remove();
       playPage.style.display = "block";
@@ -181,6 +176,8 @@ function checkAnswer(data) {
       if (numOfQuestions === numOfDigitYouWant) {
         clearInterval(int);
 
+        document.querySelector(".top-results").style.display = "block";
+
         if (chooseTable.value === "object1") {
           newResult("objectOne", objectOneResults, "object-1-tbody");
         } else if (chooseTable.value === "object2") {
@@ -238,6 +235,7 @@ function showResults() {
   if (numOfQuestions === numOfDigitYouWant) {
     playPage.remove();
     resultsPage.style.display = "block";
+
     document.querySelector(".results .score").innerHTML = rightAnswers;
 
     document.querySelector(".results .time").innerHTML = timerRef.innerHTML;
@@ -247,7 +245,6 @@ function showResults() {
     document.querySelector(".results .table").innerHTML = tableType;
   }
 }
-
 // results table function
 
 function getDateOfToday() {
@@ -256,11 +253,12 @@ function getDateOfToday() {
   let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   let yyyy = today.getFullYear();
 
-  today = mm + "-" + dd + "-" + yyyy;
+  today = dd + "-" + mm + "-" + yyyy;
   return today;
 }
 
 let objectOneResults = [];
+
 if (localStorage.objectOne) {
   objectOneResults = JSON.parse(localStorage.objectOne);
 } else {
@@ -315,9 +313,22 @@ function showResultsTable(tableId, tableArray) {
   document.getElementById(tableId).innerHTML = table;
 }
 
+showCompleteTables();
 showResultsTable("object-1-tbody", objectOneResults);
 showResultsTable("object-2-tbody", objectTwoResults);
 showResultsTable("action-tbody", actionResults);
+
+function showCompleteTables() {
+  if (objectOneResults.length === 0) {
+    document.getElementById("result-table1").style.display = "none";
+  }
+  if (objectTwoResults.length === 0) {
+    document.getElementById("result-table2").style.display = "none";
+  }
+  if (actionResults.length === 0) {
+    document.getElementById("result-table3").style.display = "none";
+  }
+}
 
 document
   .querySelector(".results .container .main-page")
