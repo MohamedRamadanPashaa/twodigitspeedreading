@@ -18,6 +18,7 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="shortcut icon" href="#" />
   </head>
   <body>
     <!-- Start Header -->
@@ -27,6 +28,18 @@
       <p>2-digit numbers system</p>
     </div>
     <!-- End Header -->
+
+    <!-- Start Festival Page -->
+    <div class="festival">
+      <canvas id="my-canvas"></canvas>
+      <div id="festival-element"></div>
+      <div class="container">
+        <span>x</span>
+        <h3>Congratulations!</h3>
+        <p>You Got Top 5</p>
+      </div>
+    </div>
+    <!-- End Festival Page -->
 
     <!-- Start Start Page -->
     <div class="train start">
@@ -145,6 +158,8 @@
     </div>
     <!-- End Tables -->
 
+    <audio id="won" preload="auto" src="audio/won.mp3"></audio>
+    <script src="./index.min.js"></script>
     <script src="JS/script.js"></script>
   </body>
 </html>

@@ -11,11 +11,11 @@ let resultsPage = document.querySelector(".results");
 let chooseTable = document.getElementById("choose-table");
 
 let cutdownTimer;
-let cutdownTime = 5;
+let cutdownTime = 3;
 let currentIndex;
 let rightAnswers = 0;
 let numOfQuestions = 0;
-let numOfDigitYouWant = 100;
+let numOfDigitYouWant = 8;
 let int = null;
 let tableType;
 let attemptTimeInSecond = 0;
@@ -140,7 +140,6 @@ function showQuestionsAndAnswer(data) {
     answerArray.splice(ranIndex, 1);
   }
 }
-
 let correctResultsDuringAnswer = document.querySelector(".current-result");
 
 function checkAnswer(data) {
@@ -289,8 +288,40 @@ function newResult(localStorageName, tableArray, tableId) {
 
   tableArray.push(newPlayer);
   localStorage.setItem(localStorageName, JSON.stringify(tableArray));
+
+  tableArray.sort(
+    (a, b) => b.score - a.score || a.attemptTimeInSecond - b.attemptTimeInSecond
+  );
+  console.log(tableArray);
+
+  if (newPlayer === tableArray[0]) {
+    setTimeout(() => {
+      document.querySelector(".festival").style.visibility = "visible";
+      document.querySelector(".festival p").innerHTML =
+        "You Got New Personal Best";
+      document.getElementById("won").play();
+      console.log("Top result");
+    }, 1000);
+  } else if (
+    newPlayer === tableArray[1] ||
+    newPlayer === tableArray[2] ||
+    newPlayer === tableArray[3] ||
+    newPlayer === tableArray[4]
+  ) {
+    setTimeout(() => {
+      console.log("Top 5");
+      document.querySelector(".festival").style.visibility = "visible";
+      document.getElementById("won").play();
+    }, 1000);
+  }
+
   showResultsTable(tableId, tableArray);
 }
+
+document.querySelector(".festival .container span").onclick = () => {
+  // document.querySelector(".festival").style.visibility = "hidden";
+  document.querySelector(".festival").remove();
+};
 
 function showResultsTable(tableId, tableArray) {
   let table = "";
@@ -329,6 +360,10 @@ function showCompleteTables() {
     document.getElementById("result-table3").style.display = "none";
   }
 }
+
+let confettiSettings = { target: "my-canvas" };
+let confetti = new ConfettiGenerator(confettiSettings);
+confetti.render();
 
 document
   .querySelector(".results .container .main-page")
