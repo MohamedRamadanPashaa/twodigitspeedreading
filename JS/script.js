@@ -11,11 +11,11 @@ let resultsPage = document.querySelector(".results");
 let chooseTable = document.getElementById("choose-table");
 
 let cutdownTimer;
-let cutdownTime = 3;
+let cutdownTime = 5;
 let currentIndex;
 let rightAnswers = 0;
 let numOfQuestions = 0;
-let numOfDigitYouWant = 8;
+let numOfDigitYouWant = 100;
 let int = null;
 let tableType;
 let attemptTimeInSecond = 0;
