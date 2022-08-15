@@ -297,6 +297,7 @@ function newResult(localStorageName, tableArray, tableId) {
   if (newPlayer === tableArray[0]) {
     setTimeout(() => {
       document.querySelector(".festival").style.visibility = "visible";
+      document.querySelector(".festival").style.opacity = "1";
       document.querySelector(".festival p").innerHTML =
         "You Got New Personal Best";
       document.getElementById("won").play();
@@ -311,6 +312,7 @@ function newResult(localStorageName, tableArray, tableId) {
     setTimeout(() => {
       console.log("Top 5");
       document.querySelector(".festival").style.visibility = "visible";
+      document.querySelector(".festival").style.opacity = "1";
       document.getElementById("won").play();
     }, 1000);
   }
@@ -320,7 +322,9 @@ function newResult(localStorageName, tableArray, tableId) {
 
 document.querySelector(".festival .container span").onclick = () => {
   // document.querySelector(".festival").style.visibility = "hidden";
-  document.querySelector(".festival").remove();
+  document.querySelector(".festival").style.visibility = "hidden";
+  document.querySelector(".festival").style.opacity = "0";
+  document.getElementById("won").pause();
 };
 
 function showResultsTable(tableId, tableArray) {

@@ -80,10 +80,11 @@ ul {
 
 .festival {
   visibility: hidden;
+  opacity: 0;
   position: absolute;
   width: 100%;
   height: calc(100% - 52px);
-  transition: visibility 0.5s;
+  transition: 0.5s;
 }
 
 .festival .container {
